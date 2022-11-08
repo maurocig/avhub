@@ -1,6 +1,11 @@
 const admin = require('firebase-admin');
 const { getFirestore } = require('firebase-admin/firestore');
+
 const dbConfig = require('../../DB/db.config');
+
+admin.initializeApp({
+  credential: admin.credential.cert(dbConfig.firebase.credentials),
+});
 
 class FirebaseContainer {
   constructor(collection) {
@@ -8,12 +13,7 @@ class FirebaseContainer {
     this.query = db.collection(collection);
   }
 
-  static async connect() {
-    // lo hacemos async para mantener la consistencia con el resto de los contenedores.
-    admin.initializeApp({
-      credential: admin.credential.cert(dbConfig.firebase.credentials),
-    });
-  }
+  static async connect() {}
 
   async getAll() {
     const docRef = await this.query.get();

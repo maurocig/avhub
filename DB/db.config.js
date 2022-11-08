@@ -1,5 +1,5 @@
 const envConfig = require('../config');
-const firebaseConfig = require('./firebase/firebase.config.json');
+const firebaseConfig = require('./firebase/firebase.config');
 
 module.exports = {
   file: {

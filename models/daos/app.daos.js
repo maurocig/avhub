@@ -2,6 +2,7 @@ const envConfig = require('../../config');
 
 let ProductsDao;
 let UsersDao;
+let CartsDao;
 
 switch (envConfig.DATASOURCE) {
   case 'mongo':
@@ -13,6 +14,7 @@ switch (envConfig.DATASOURCE) {
   case 'firebase':
     ProductsDao = require('./products/products.firebase.dao');
     UsersDao = require('./users/users.firebase.dao');
+    CartsDao = require('./carts/carts.firebase.dao');
     break;
 
   default:
