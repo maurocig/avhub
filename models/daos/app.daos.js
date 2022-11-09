@@ -7,14 +7,17 @@ let CartsDao;
 switch (envConfig.DATASOURCE) {
   case 'mongo':
     ProductsDao = require('./products/products.mongo.dao');
-    UsersDao = require('./users/users.mongo.dao');
     CartsDao = require('./carts/carts.mongo.dao');
     break;
 
   case 'firebase':
     ProductsDao = require('./products/products.firebase.dao');
-    UsersDao = require('./users/users.firebase.dao');
     CartsDao = require('./carts/carts.firebase.dao');
+    break;
+
+  case 'files':
+    ProductsDao = require('./products/products.files.dao');
+    CartsDao = require('./carts/carts.files.dao');
     break;
 
   default:
