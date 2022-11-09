@@ -91,6 +91,7 @@ class CartsController {
       const response = successResponse(updatedCart);
       res.status(HTTP_STATUS.OK).json(response);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

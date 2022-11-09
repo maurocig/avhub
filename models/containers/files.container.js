@@ -25,11 +25,11 @@ class MemoryContainer {
 
   async getById(id) {
     const file = await this.getFile();
-    const array = file.filter((product) => product.id === id);
+    const array = file.filter((cart) => cart.id === id);
     if (array.length === 0) {
-      return false;
+      const message = `Cart with id ${id} does not exist in our records.`;
+      throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     } else {
-      console.log(array[0]);
       return array[0];
     }
   }
