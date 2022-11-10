@@ -7,7 +7,7 @@ const { HttpError } = require('../../../utils/api.utils');
 const data = dbConfig.memory.carts;
 const resource = 'Cart';
 
-class CartsFilesDao extends MemoryContainer {
+class CartsMemoryDao extends MemoryContainer {
   constructor() {
     super(data, resource);
   }
@@ -30,12 +30,10 @@ class CartsFilesDao extends MemoryContainer {
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
     const cart = filtrado[0];
-    console.log(cart.products);
     const index = cart.products.findIndex((item) => item === productId);
     cart.products.splice(index, 1);
-    console.log(cart.products);
     return await this.update(cartId, cart);
   }
 }
 
-module.exports = CartsFilesDao;
+module.exports = CartsMemoryDao;

@@ -1,11 +1,12 @@
-const MemoryContainer = require('../../containers/files.container');
+const MemoryContainer = require('../../containers/memory.container');
 const dbConfig = require('../../../DB/db.config');
 
-const collection = dbConfig.memory.products;
+const data = dbConfig.memory.products;
+const resource = 'Product';
 
 class ProductsMemoryDao extends MemoryContainer {
   constructor() {
-    super(collection);
+    super(data, resource);
   }
 }
 
