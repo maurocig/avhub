@@ -13,9 +13,8 @@ class MemoryContainer {
   static async connect() {}
 
   async getFile() {
-    const content = await fs.readFile(`${this.resource}`, 'utf-8');
-    // const content = await fs.readFileSync(`./products.json`, 'utf-8');
-    return JSON.parse(content);
+    const data = await fs.readFile(`${this.resource}`, 'utf-8');
+    return JSON.parse(data);
   }
 
   async getAll() {

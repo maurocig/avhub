@@ -20,6 +20,11 @@ switch (envConfig.DATASOURCE) {
     CartsDao = require('./carts/carts.files.dao');
     break;
 
+  case 'memory':
+    ProductsDao = require('./products/products.memory.dao');
+    CartsDao = require('./carts/carts.memory.dao');
+    break;
+
   default:
     throw new Error('Invalid Datasource');
 }
