@@ -1,4 +1,5 @@
 const FirebaseContainer = require('../../containers/firebase.container');
+const admin = require('firebase-admin');
 
 const collection = 'carts';
 
@@ -8,29 +9,29 @@ class CartsFirebaseDao extends FirebaseContainer {
   }
 
   async addProduct(cartId, productId) {
-    const cartRef = await this.query.get();
-    if (!cart) {
+    const cartRef = await this.query.doc(cartId);
+    if (!cartRef) {
       const message = `Cart with id ${cartId} does not exist in our records.`;
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
-    const updatedCart = await this.model.updateOne(
-      { _id: cartId },
-      { $push: { products: productId } }
-    );
-    return updatedCart;
+    const updatedCart = await cartRef.update({
+      products: admin.firestore.FieldValue.arrayUnion(productId),
+    });
+    const document = await cartRef.get();
+    return document.data();
   }
 
   async removeProduct(cartId, productId) {
-    const cart = await this.model.findOne({ _id: cartId }, { __v: 0 });
-    if (!cart) {
+    const cartRef = await this.query.doc(cartId);
+    if (!cartRef) {
       const message = `Cart with id ${cartId} does not exist in our records.`;
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
-    const updatedCart = await this.model.updateOne(
-      { id: cartId },
-      { $pull: { products: productId } }
-    );
-    return updatedCart;
+    const updatedCart = await cartRef.update({
+      products: admin.firestore.FieldValue.arrayRemove(productId),
+    });
+    const document = await cartRef.get();
+    return document.data();
   }
 }
 

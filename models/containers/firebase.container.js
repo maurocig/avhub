@@ -1,5 +1,11 @@
 const admin = require('firebase-admin');
 const { getFirestore } = require('firebase-admin/firestore');
+const {
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+} = require('firebase-admin/firestore');
 
 const dbConfig = require('../../DB/db.config');
 
@@ -27,13 +33,13 @@ class FirebaseContainer {
   }
 
   async getById(id) {
-    const docRef = this.query.get(id);
+    const docRef = this.query.doc(id);
+    const docSnap = await docRef.get();
     if (!docRef) {
       const message = `Resource with id ${id} does not exist in our records.`;
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
-    const document = await docRef.get();
-    return document.data();
+    return docSnap.data();
   }
 
   async save(item) {
