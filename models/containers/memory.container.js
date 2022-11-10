@@ -12,10 +12,6 @@ class MemoryContainer {
 
   static async connect() {}
 
-  /* async getResource() { */
-  /*   const data = this.resource; */
-  /* } */
-
   getAll() {
     return this.data;
   }
