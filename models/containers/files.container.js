@@ -1,6 +1,5 @@
 const { v4: uuid } = require('uuid');
 const fs = require('fs/promises');
-// const fs = require('fs');
 
 const HTTP_STATUS = require('../../constants/api.constants');
 const { HttpError } = require('../../utils/api.utils');

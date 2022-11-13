@@ -1,7 +1,6 @@
 const envConfig = require('../../config');
 
 let ProductsDao;
-let UsersDao;
 let CartsDao;
 
 switch (envConfig.DATASOURCE) {
@@ -31,6 +30,5 @@ switch (envConfig.DATASOURCE) {
 
 module.exports = {
   ProductsDao,
-  UsersDao,
   CartsDao,
 };

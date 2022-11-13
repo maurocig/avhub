@@ -16,10 +16,4 @@ module.exports = {
   firebase: {
     credentials: firebaseConfig,
   },
-  // sql: {
-  // 	mariadb: {
-  // 		client: 'mysql',
-  // 		host:
-  // 	}
-  // }
 };

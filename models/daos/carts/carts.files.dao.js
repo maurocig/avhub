@@ -31,7 +31,6 @@ class CartsFilesDao extends FilesContainer {
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
     const cart = filtrado[0];
-    console.log(cart.products);
     const index = cart.products.findIndex((item) => item === productId);
     cart.products.splice(index, 1);
     return await this.update(cartId, cart);

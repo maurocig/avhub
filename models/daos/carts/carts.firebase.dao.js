@@ -14,7 +14,7 @@ class CartsFirebaseDao extends FirebaseContainer {
       const message = `Cart with id ${cartId} does not exist in our records.`;
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
-    const updatedCart = await cartRef.update({
+    await cartRef.update({
       products: admin.firestore.FieldValue.arrayUnion(productId),
     });
     const document = await cartRef.get();
@@ -27,7 +27,7 @@ class CartsFirebaseDao extends FirebaseContainer {
       const message = `Cart with id ${cartId} does not exist in our records.`;
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
-    const updatedCart = await cartRef.update({
+    await cartRef.update({
       products: admin.firestore.FieldValue.arrayRemove(productId),
     });
     const document = await cartRef.get();

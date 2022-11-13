@@ -1,7 +1,5 @@
-const { config } = require('dotenv');
 const { v4: uuid } = require('uuid');
 const HTTP_STATUS = require('../../constants/api.constants');
-const dbConfig = require('../../DB/db.config');
 const { HttpError } = require('../../utils/api.utils');
 
 class MemoryContainer {

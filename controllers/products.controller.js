@@ -1,6 +1,7 @@
 const HTTP_STATUS = require('../constants/api.constants');
 const { ProductsDao } = require('../models/daos/app.daos');
 const { successResponse } = require('../utils/api.utils');
+const Mongoose = require('mongoose');
 
 const productsDao = new ProductsDao();
 
@@ -30,11 +31,12 @@ class ProductsController {
   async saveProduct(req, res, next) {
     try {
       const product = {
+        _id: Mongoose.Types.ObjectId(),
         timestamp: new Date(),
         ...req.body,
       };
-      const newProduct = await productsDao.save(product);
-      const response = successResponse(newProduct);
+      await productsDao.save(product);
+      const response = successResponse(product);
       res.status(HTTP_STATUS.CREATED).json(response);
     } catch (error) {
       next(error);
@@ -44,7 +46,11 @@ class ProductsController {
   async updateProduct(req, res, next) {
     const { id } = req.params;
     try {
-      const updatedProduct = await productsDao.update(id, req.body);
+      const updatedProduct = {
+        id,
+        ...req.body,
+      };
+      await productsDao.update(id, req.body);
       const response = successResponse(updatedProduct);
       res.status(HTTP_STATUS.OK).json(response);
     } catch (error) {
@@ -62,17 +68,6 @@ class ProductsController {
       next(error);
     }
   }
-
-  //   async populate(req, res, next) {
-  //     const { qty } = req.query;
-  //     try {
-  //       const products = productsDao.populate(qty);
-  //       const response = successResponse(products);
-  //       res.status(HTTP_STATUS.OK).json(response);
-  //     } catch (error) {
-  //       next(error);
-  //     }
-  //   }
 }
 
 module.exports = new ProductsController();
