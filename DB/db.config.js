@@ -11,7 +11,7 @@ module.exports = {
     carts: [],
   },
   mongodb: {
-    uri: `mongodb+srv://maurocig:${envConfig.DB_PASSWORD}@coderxx.fm0gxl1.mongodb.net/?retryWrites=true&w=majority`,
+    uri: `mongodb+srv://maurocig:${envConfig.DB_PASSWORD}@coderxx.fm0gxl1.mongodb.net/p-final?retryWrites=true&w=majority`,
   },
   firebase: {
     credentials: firebaseConfig,
