@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Registro</title>
+  </head>
+  <body>
+    <form class="form-group w-50 m-auto card p-3" action="/auth/register" method="post">
+      <h1 class="m-auto text-center mb-3">Crear una cuenta</h1>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label" for="username">Email</label>
+          <input class="form-control" type="email" name="username" id="username" placeholder="e-mail" />
+        </div>
+        <div class="mb-3 col-6">
+          <label class="form-label" for="password">Contraseña</label>
+          <input class="form-control" type="password" name="password" placeholder="Contraseña" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label" for="name">Nombre</label>
+          <input class="form-control" type="text" name="name" placeholder="" />
+        </div>
+        <div class="mb-3 col-6">
+          <label class="form-label" for="address">Dirección</label>
+          <input class="form-control" type="text" name="address" placeholder="" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label" for="age">Edad</label>
+          <input class="form-control" type="number" name="age" placeholder="" />
+        </div>
+        <div class="mb-3 col-6">
+          <label class="form-label" for="phone">Teléfono</label>
+          <input class="form-control" type="number" name="phone" placeholder="" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <label class="form-label" for="picture">Imagen</label>
+          <input class="form-control" type="text" name="picture" placeholder="" />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Registrarme</button>
+    </form>
+    <h2>Ya tenés cuenta? <a href="/login">Iniciá sesión.</a></h2>
+  </body>
+</html>
