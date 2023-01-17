@@ -29,4 +29,22 @@ router.get('/register', async (req, res) => {
   res.sendFile('register.html', { root: 'public' });
 });
 
+router.get('/logout', async (req, res) => {
+  console.log('[GET] => /logout');
+  try {
+    await req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+        res.clearCookie('my-session');
+      } else {
+        res.clearCookie('my-session');
+        res.send('Hasta luego');
+        // res.redirect('/login');
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
