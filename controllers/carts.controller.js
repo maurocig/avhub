@@ -1,12 +1,14 @@
 const HTTP_STATUS = require('../constants/api.constants');
 const { CartsDao } = require('../models/daos/app.daos');
 const { successResponse } = require('../utils/api.utils');
+const logger = require('../middleware/logger');
 
 const cartsDao = new CartsDao();
 
 class CartsController {
   async getCarts(req, res, next) {
     try {
+      logger.info('[GET] => /carts');
       const carts = await cartsDao.getAll();
       const response = successResponse(carts);
       res.status(HTTP_STATUS.OK).json(response);
@@ -17,6 +19,7 @@ class CartsController {
 
   async getCartsById(req, res, next) {
     const { id } = req.params;
+    logger.info(`[GET] => /carts/${id}`);
     try {
       const cart = await cartsDao.getById(id);
       const response = successResponse(cart);
@@ -27,11 +30,12 @@ class CartsController {
   }
 
   async saveCart(req, res, next) {
+    const cart = {
+      timestamp: new Date(),
+      ...req.body,
+    };
+    logger.info('[POST] => /carts');
     try {
-      const cart = {
-        timestamp: new Date(),
-        ...req.body,
-      };
       const newCart = await cartsDao.save(cart);
       const response = successResponse(newCart);
       res.status(HTTP_STATUS.CREATED).json(response);
@@ -42,6 +46,7 @@ class CartsController {
 
   async updateCart(req, res, next) {
     const { id } = req.params;
+    logger.info(`[PUT] => /carts/${id}`);
     try {
       const updatedCart = await cartsDao.update(id, req.body);
       const response = successResponse(updatedCart);
@@ -53,6 +58,7 @@ class CartsController {
 
   async deleteCart(req, res, next) {
     const { id } = req.params;
+    logger.info(`[DELETE] => /carts/${id}`);
     try {
       const deletedCart = await cartsDao.delete(id);
       const response = successResponse(deletedCart);

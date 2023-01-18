@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 const UsersDao = require('../models/daos/users/users.mongo.dao');
 const { formatUserForDB } = require('../utils/users.utils');
+const logger = require('../middleware/logger');
 
 const User = new UsersDao();
 
@@ -23,8 +24,8 @@ passport.use(
     },
     async (req, username, password, done) => {
       try {
+        logger.info('[POST] => /register');
         const { name, address, age, phone, picture } = req.body;
-
         const userItem = {
           email: username,
           password: createHash(password),
@@ -36,11 +37,11 @@ passport.use(
         };
         const newUser = formatUserForDB(userItem);
         const user = await User.createUser(newUser);
-        console.log('User registration successful');
+        logger.info('User registration successful');
         return done(null, user);
       } catch (error) {
-        console.log('Error signing user up...');
-        console.log(error);
+        logger.error('Error signing user up...');
+        logger.error(error);
         return done(error);
       }
     }
@@ -52,15 +53,15 @@ passport.use(
   'signin',
   new LocalStrategy(async (username, password, done) => {
     try {
+      logger.info('[POST] => /login');
       const user = await User.getByEmail(username);
       if (!isValidPassword(user, password)) {
-        console.log('Invalid user or password');
+        logger.warn('Invalid user or password');
         return done(null, false);
       }
       return done(null, user);
     } catch (error) {
-      console.log('Error signing in...');
-      console.log(error);
+      logger.error(error);
       return done(error);
     }
   })
