@@ -23,6 +23,7 @@
     "firestore": "^1.1.6",
     "fs": "^0.0.1-security",
     "mongoose": "^6.7.1",
+    "multer": "^1.4.5-lts.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pino": "^8.8.0",

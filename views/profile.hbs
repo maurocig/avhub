@@ -1,0 +1,21 @@
+{{>nav}}
+
+<main class="m-4 relative h-max bg-red-500">
+	<span class="block">
+		<strong>Nombre: </strong> {{user.name}}
+	</span>
+	<span class="block">
+		<strong>Dirección: </strong> {{user.address}}
+	</span>
+	<span class="block">
+		<strong>Edad: </strong> {{user.age}}
+	</span>
+	<span class="block">
+		<strong>Teléfono: </strong> {{user.phone}}
+	</span>
+	<strong>Imagen: </strong> {{user.image}}
+
+	<span>
+		<img src="data/avatars/{{user.image}}" alt="">
+	</span>
+</main>

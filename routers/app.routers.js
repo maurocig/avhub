@@ -1,7 +1,8 @@
 const { Router } = require('express');
-const productsRoutes = require('./products/products.routes');
-const cartsRoutes = require('./carts/carts.routes');
-const authRoutes = require('./auth/auth.routes');
+const productsRoutes = require('./products.routes');
+const cartsRoutes = require('./carts.routes');
+const authRoutes = require('./auth.routes');
+const usersRoutes = require('./users.routes');
 const logger = require('../middleware/logger');
 
 const router = Router();
@@ -9,6 +10,7 @@ const router = Router();
 router.use('/auth', authRoutes);
 router.use('/products', productsRoutes);
 router.use('/carts', cartsRoutes);
+router.use('/users', usersRoutes);
 
 router.get('/', async (req, res) => {
   logger.info('[GET] => /');
@@ -46,6 +48,11 @@ router.get('/logout', async (req, res) => {
   } catch (err) {
     logger.error(err);
   }
+});
+
+router.get('/perfil', (req, res) => {
+  const user = req.user;
+  res.render('profile', { user });
 });
 
 module.exports = router;

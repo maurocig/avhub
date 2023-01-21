@@ -12,9 +12,9 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   name: { type: String, required: true },
   address: { type: String },
-  age: { type: String },
+  age: { type: Number },
   phone: { type: Number },
-  picture: { type: String },
+  image: { type: String },
   createdAt: { type: Date, required: true },
   updatedAt: { type: Date, required: true },
 });

@@ -4,8 +4,9 @@ const formatUserForDB = (userObj) => {
     password: userObj.password,
     name: userObj.name,
     address: userObj.address,
+    age: userObj.age,
     phone: userObj.phone,
-    picture: userObj.picture,
+    image: userObj.image,
     createdAt: new Date(),
     updatedAt: new Date(),
   };

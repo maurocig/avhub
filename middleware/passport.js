@@ -25,7 +25,7 @@ passport.use(
     async (req, username, password, done) => {
       try {
         logger.info('[POST] => /register');
-        const { name, address, age, phone, picture } = req.body;
+        const { name, address, age, phone } = req.body;
         const userItem = {
           email: username,
           password: createHash(password),
@@ -33,9 +33,10 @@ passport.use(
           address,
           age,
           phone,
-          picture,
+          image: req.file.filename,
         };
         const newUser = formatUserForDB(userItem);
+        logger.info(userItem);
         const user = await User.createUser(newUser);
         logger.info('User registration successful');
         return done(null, user);
