@@ -6,6 +6,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const DATASOURCE = process.env.DATASOURCE;
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const PASSWORD_EMAIL = process.env.PASSWORD_EMAIL;
 
 console.log({ DB_PASSWORD, DATASOURCE });
 
@@ -14,4 +15,5 @@ module.exports = {
   DATASOURCE,
   SESSION_SECRET,
   ADMIN_EMAIL,
+  PASSWORD_EMAIL,
 };

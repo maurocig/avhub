@@ -5,11 +5,11 @@ const TEST_MAIL = 'gerardo96@ethereal.email';
 const PASSWORD = 'UBz6nSDYNPSqhD1e9a';
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.ethereal.email', // servidor integrado de nodemailer.
+  service: 'hotmail',
   port: 587,
   auth: {
-    user: TEST_MAIL,
-    pass: PASSWORD,
+    user: ADMIN_EMAIL,
+    pass: PASSWORD_EMAIL,
   },
 });
 
@@ -20,11 +20,11 @@ const mailPayload = {
   html: '<h1 style="color:teal;">Contenido de prueba desde <span style="color:red;">Node.js con Nodemailer</span></h1>',
 };
 
-const sendNewRegEmail = async (userInfo, adminEmail) => {
+const sendNewRegEmail = async (userInfo, recipient) => {
   try {
     const mailResponse = await transporter.sendMail({
-      from: `enviador <${TEST_MAIL}>`,
-      to: `Usuario <${adminEmail}>`,
+      from: `enviador <${ADMIN_EMAIL}>`,
+      to: `Usuario <${recipient}>`,
       subject: 'E-commerce- Nuevo registro de usuario',
       text: userInfo,
     });
