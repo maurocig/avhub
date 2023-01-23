@@ -27,6 +27,11 @@ const sendNewRegEmail = async (userInfo, recipient) => {
       to: `Usuario <${recipient}>`,
       subject: 'E-commerce- Nuevo registro de usuario',
       text: userInfo,
+      attachments: [
+        {
+          path: 'public/img/ecommerce-mail.jpg',
+        },
+      ],
     });
     console.log(mailResponse);
   } catch (error) {
