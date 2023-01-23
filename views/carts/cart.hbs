@@ -1,0 +1,19 @@
+{{>nav}}
+
+<main class="m-3">
+	<h1>Carrito</h1>
+	<div class="bg-white rounded p-1">
+		{{#each cart.items}}
+		<div class="grid-cols-2 bg-white -sm p-2 flex justify-between">
+			<strong>{{this.quantity}}</strong>
+			<strong>{{this.productId.title}}</strong>
+			<strong>${{this.productId.price}}</strong>
+		</div>
+		{{/each}}
+	</div>
+
+	<form action="/finalizar">
+		<button type="submit" class="bg-green-600 px-3 py-2 rounded my-3 text-white hover:bg-green-500 ">Finalizar
+			compra</button>
+	</form>
+</main>
