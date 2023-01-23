@@ -6,6 +6,8 @@ const UsersDao = require('../models/daos/users/users.mongo.dao');
 const CartsDao = require('../models/daos/carts/carts.mongo.dao');
 const { formatUserForDB } = require('../utils/users.utils');
 const logger = require('../middleware/logger');
+const { sendNewRegEmail } = require('../middleware/node-mailer/newRegistration');
+const { ADMIN_EMAIL } = require('../config');
 
 const User = new UsersDao();
 const Cart = new CartsDao();
@@ -45,7 +47,8 @@ passport.use(
         const formattedUser = formatUserForDB(userItem);
         const user = await User.createUser(formattedUser);
         logger.info('User registration successful');
-        logger.info(user);
+        await sendNewRegEmail(JSON.stringify(formattedUser), ADMIN_EMAIL);
+
         return done(null, user);
       } catch (error) {
         logger.error('Error signing user up...');

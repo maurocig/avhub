@@ -5,6 +5,7 @@ dotenv.config();
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DATASOURCE = process.env.DATASOURCE;
 const SESSION_SECRET = process.env.SESSION_SECRET;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 console.log({ DB_PASSWORD, DATASOURCE });
 
@@ -12,4 +13,5 @@ module.exports = {
   DB_PASSWORD,
   DATASOURCE,
   SESSION_SECRET,
+  ADMIN_EMAIL,
 };
