@@ -4,6 +4,9 @@ const cartsRoutes = require('./carts.routes');
 const authRoutes = require('./auth.routes');
 const usersRoutes = require('./users.routes');
 const logger = require('../middleware/logger');
+const { CartsDao } = require('../models/daos/app.daos');
+
+const Cart = new CartsDao();
 
 const router = Router();
 
@@ -50,9 +53,19 @@ router.get('/logout', async (req, res) => {
   }
 });
 
-router.get('/perfil', (req, res) => {
+router.get('/profile', (req, res) => {
   const user = req.user;
   res.render('profile', { user });
+});
+
+router.get('/cart', async (req, res) => {
+  const cartId = req.user.cart;
+  const cart = await Cart.getByIdAndPopulate(cartId);
+  if (!cart) {
+    res.send('This item is already on your cart.');
+  }
+  logger.info(cart);
+  res.render('carts/cart', { cart });
 });
 
 module.exports = router;

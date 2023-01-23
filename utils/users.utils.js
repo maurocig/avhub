@@ -7,6 +7,7 @@ const formatUserForDB = (userObj) => {
     age: userObj.age,
     phone: userObj.phone,
     image: userObj.image,
+    cart: userObj.cart,
     createdAt: new Date(),
     updatedAt: new Date(),
   };

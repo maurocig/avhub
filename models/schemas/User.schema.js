@@ -15,6 +15,7 @@ const UserSchema = new Schema({
   age: { type: Number },
   phone: { type: Number },
   image: { type: String },
+  cart: { type: Schema.Types.ObjectId, ref: 'carts' },
   createdAt: { type: Date, required: true },
   updatedAt: { type: Date, required: true },
 });

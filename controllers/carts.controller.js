@@ -80,10 +80,15 @@ class CartsController {
 
   async addToCart(req, res, next) {
     const { cartId, productId } = req.params;
+    const { quantity } = req.body;
+
     try {
-      const updatedCart = await cartsDao.addProduct(cartId, productId);
-      const response = successResponse(updatedCart);
-      res.status(HTTP_STATUS.OK).json(response);
+      const updatedCart = await cartsDao.addItemToCart(cartId, productId, quantity);
+      if (!updatedCart) {
+        res.send('This item is already on your cart.');
+      }
+
+      res.redirect('/cart');
     } catch (error) {
       next(error);
     }

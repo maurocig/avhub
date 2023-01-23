@@ -1,33 +1,38 @@
-const { Schema } = require('mongoose');
+const logger = require('../../../middleware/logger');
+const { HttpError, errorResponse } = require('../../../utils/api.utils');
 const MongoContainer = require('../../containers/mongo.container');
+const CartSchema = require('../../schemas/Cart.schema');
 
 const collection = 'carts';
-const cartsSchema = new Schema(
-  {
-    products: { type: Schema.Types.Array },
-    timestamp: { type: Schema.Types.Date },
-  },
-  {
-    timestamps: false,
-  }
-);
 
-class CartsMongoDao extends MongoContainer {
+class CartsDao extends MongoContainer {
   constructor() {
-    super(collection, cartsSchema);
+    super(collection, CartSchema);
   }
 
-  async addProduct(cartId, productId) {
+  async getByIdAndPopulate(id) {
+    const cart = await this.model.findOne({ _id: id }, { __v: 0 }).populate('items.productId').lean();
+    logger.info(cart);
+    return cart;
+  }
+
+  async addItemToCart(cartId, productId, quantity) {
     const cart = await this.model.findOne({ _id: cartId }, { __v: 0 });
-    if (!cart) {
-      const message = `Cart with id ${cartId} does not exist in our records.`;
-      throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
+    const product = await this.model.findOne;
+    if (cart) {
+      const cartItem = {
+        productId,
+        quantity,
+      };
+      if (cart.items.some((item) => item.productId == cartItem.productId)) {
+        return false;
+      }
+      const updatedCart = await this.model.updateOne({ _id: cartId }, { $push: { items: cartItem } });
+      return updatedCart;
     }
-    const updatedCart = await this.model.updateOne(
-      { _id: cartId },
-      { $push: { products: productId } }
-    );
-    return updatedCart;
+
+    const message = `Cart with id ${cartId} does not exist in our records.`;
+    throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
   }
 
   async removeProduct(cartId, productId) {
@@ -36,12 +41,9 @@ class CartsMongoDao extends MongoContainer {
       const message = `Cart with id ${cartId} does not exist in our records.`;
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
-    const updatedCart = await this.model.updateOne(
-      { id: cartId },
-      { $pull: { products: productId } }
-    );
+    const updatedCart = await this.model.updateOne({ id: cartId }, { $pull: { products: productId } });
     return updatedCart;
   }
 }
 
-module.exports = CartsMongoDao;
+module.exports = CartsDao;

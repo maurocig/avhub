@@ -3,10 +3,12 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
 const UsersDao = require('../models/daos/users/users.mongo.dao');
+const CartsDao = require('../models/daos/carts/carts.mongo.dao');
 const { formatUserForDB } = require('../utils/users.utils');
 const logger = require('../middleware/logger');
 
 const User = new UsersDao();
+const Cart = new CartsDao();
 
 const salt = () => bcrypt.genSaltSync(10);
 const createHash = (password) => bcrypt.hashSync(password, salt());
@@ -26,6 +28,9 @@ passport.use(
       try {
         logger.info('[POST] => /register');
         const { name, address, age, phone } = req.body;
+
+        const cart = await Cart.save({ items: [] });
+
         const userItem = {
           email: username,
           password: createHash(password),
@@ -33,12 +38,14 @@ passport.use(
           address,
           age,
           phone,
+          cart,
           image: req.file.filename,
         };
-        const newUser = formatUserForDB(userItem);
-        logger.info(userItem);
-        const user = await User.createUser(newUser);
+
+        const formattedUser = formatUserForDB(userItem);
+        const user = await User.createUser(formattedUser);
         logger.info('User registration successful');
+        logger.info(user);
         return done(null, user);
       } catch (error) {
         logger.error('Error signing user up...');

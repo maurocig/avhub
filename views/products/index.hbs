@@ -1,0 +1,21 @@
+{{>nav}}
+
+
+<main class="m-4 relative h-max">
+
+	<h1>Productos</h1>
+	<section class="">
+
+		<ul>
+			{{#each products}}
+			<li>
+				<a href="/products/{{this._id}}" class="text-blue-300 font-bold no-underline">
+					{{this.title}}
+				</a>
+			</li>
+			{{/each}}
+		</ul>
+
+	</section>
+
+</main>
