@@ -30,6 +30,7 @@
     "pino": "^8.8.0",
     "pino-pretty": "^9.1.1",
     "tailwindcss": "^3.2.4",
+    "twilio": "^3.84.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

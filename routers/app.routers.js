@@ -1,10 +1,13 @@
 const { Router } = require('express');
+
 const productsRoutes = require('./products.routes');
 const cartsRoutes = require('./carts.routes');
 const authRoutes = require('./auth.routes');
 const usersRoutes = require('./users.routes');
 const logger = require('../middleware/logger');
-const { CartsDao } = require('../models/daos/app.daos');
+const { CartsDao, UsersDao } = require('../models/daos/app.daos');
+const { sendCheckoutEmail } = require('../middleware/node-mailer/sendEmail');
+const { ADMIN_EMAIL } = require('../config');
 
 const Cart = new CartsDao();
 
@@ -66,6 +69,16 @@ router.get('/cart', async (req, res) => {
   }
   logger.info(cart);
   res.render('carts/cart', { cart });
+});
+
+router.post('/checkout', async (req, res) => {
+  const cartId = req.user.cart;
+  const cart = await Cart.getByIdAndPopulate(cartId);
+
+  // res.send(cart);
+
+  await sendCheckoutEmail(req.user, cart, 'mcigliuti01@gmail.com');
+  res.send(cart);
 });
 
 module.exports = router;
