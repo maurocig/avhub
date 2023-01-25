@@ -47,7 +47,7 @@ passport.use(
         const formattedUser = formatUserForDB(userItem);
         const user = await User.createUser(formattedUser);
         logger.info('User registration successful');
-        await sendNewRegEmail(JSON.stringify(formattedUser), 'mcigliuti01@gmail.com');
+        await sendNewRegEmail(JSON.stringify(formattedUser), ADMIN_EMAIL);
 
         return done(null, user);
       } catch (error) {
