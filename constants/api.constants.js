@@ -6,4 +6,6 @@ const HTTP_STATUS = {
   INTERNAL_ERROR: 500,
 };
 
-module.exports = HTTP_STATUS;
+const CLUSTER_MODE = true;
+
+module.exports = { HTTP_STATUS, CLUSTER_MODE };
