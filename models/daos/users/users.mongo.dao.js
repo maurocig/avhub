@@ -10,7 +10,7 @@ class UsersDao extends MongoContainer {
     super(collection, UserSchema);
   }
 
-  async createUser(userItem) {
+  async create(userItem) {
     try {
       const user = await this.save(userItem);
       return user;

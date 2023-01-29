@@ -2,15 +2,12 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
-const UsersDao = require('../models/daos/users/users.mongo.dao');
-const CartsDao = require('../models/daos/carts/carts.mongo.dao');
-const { formatUserForDB } = require('../utils/users.utils');
+const { createUser, getUserByEmail, getUserById } = require('../services/users.service');
+const { createCart } = require('../services/carts.service');
+
 const logger = require('../middleware/logger');
 const { sendNewRegEmail } = require('./node-mailer/sendEmail');
 const { ADMIN_EMAIL } = require('../config');
-
-const User = new UsersDao();
-const Cart = new CartsDao();
 
 const salt = () => bcrypt.genSaltSync(10);
 const createHash = (password) => bcrypt.hashSync(password, salt());
@@ -31,7 +28,7 @@ passport.use(
         logger.info('[POST] => /register');
         const { name, address, age, phone } = req.body;
 
-        const cart = await Cart.save({ items: [] });
+        const cart = await createCart();
 
         const userItem = {
           email: username,
@@ -44,11 +41,9 @@ passport.use(
           image: req.file.filename,
         };
 
-        const formattedUser = formatUserForDB(userItem);
-        const user = await User.createUser(formattedUser);
+        const user = await createUser(userItem);
         logger.info('User registration successful');
-        await sendNewRegEmail(JSON.stringify(formattedUser), ADMIN_EMAIL);
-
+        await sendNewRegEmail(JSON.stringify(userItem), ADMIN_EMAIL);
         return done(null, user);
       } catch (error) {
         logger.error('Error signing user up...');
@@ -65,7 +60,7 @@ passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
       logger.info('[POST] => /login');
-      const user = await User.getByEmail(username);
+      const user = await getUserByEmail(username);
       if (!isValidPassword(user, password)) {
         logger.warn('Invalid user or password');
         return done(null, false);
@@ -85,7 +80,7 @@ passport.serializeUser((user, done) => {
 
 // Deserialization
 passport.deserializeUser(async (id, done) => {
-  const user = await User.getById(id);
+  const user = await getUserById(id);
   done(null, user);
 });
 
