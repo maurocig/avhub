@@ -1,44 +1,42 @@
-const HTTP_STATUS = require('../constants/api.constants');
-const { CartsDao } = require('../models/daos/app.daos');
 const { successResponse } = require('../utils/api.utils');
 const logger = require('../middleware/logger');
-const { addItemToCart, removeItemFromCart } = require('../services/carts.service');
+const CartsServices = require('../services/carts.service');
 
-const cartsDao = new CartsDao();
+const Cart = new CartsServices();
 
 class CartsController {
-  async getCarts(req, res, next) {
+  async getAll(req, res, next) {
+    logger.info('[GET] => /carts');
     try {
-      logger.info('[GET] => /carts');
-      const carts = await cartsDao.getAll();
+      const carts = await Cart.getAll();
       const response = successResponse(carts);
-      res.status(HTTP_STATUS.OK).json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
   }
 
-  async getCartsById(req, res, next) {
+  async getById(req, res, next) {
     const { id } = req.params;
     logger.info(`[GET] => /carts/${id}`);
     try {
-      const cart = await cartsDao.getById(id);
+      const cart = await Cart.getById(id);
       const response = successResponse(cart);
-      res.status(HTTP_STATUS.OK).json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
   }
 
   async saveCart(req, res, next) {
+    logger.info('[POST] => /carts');
     const cart = {
       ...req.body,
     };
-    logger.info('[POST] => /carts');
     try {
-      const newCart = await cartsDao.save(cart);
+      const newCart = await Cart.save(cart);
       const response = successResponse(newCart);
-      res.status(HTTP_STATUS.CREATED).json(response);
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }
@@ -48,9 +46,9 @@ class CartsController {
     const { id } = req.params;
     logger.info(`[PUT] => /carts/${id}`);
     try {
-      const updatedCart = await cartsDao.update(id, req.body);
+      const updatedCart = await Cart.update(id, req.body);
       const response = successResponse(updatedCart);
-      res.status(HTTP_STATUS.OK).json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -60,30 +58,20 @@ class CartsController {
     const { id } = req.params;
     logger.info(`[DELETE] => /carts/${id}`);
     try {
-      const deletedCart = await cartsDao.delete(id);
+      const deletedCart = await Cart.delete(id);
       const response = successResponse(deletedCart);
-      res.status(HTTP_STATUS.OK).json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
   }
 
-  async getCartProducts(req, res, next) {
-    const { id } = req.params;
-    try {
-      const cartProducts = await cartsDao.getProducts(id);
-      return cartProducts;
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async addToCart(req, res, next) {
+  async addItem(req, res, next) {
     const { cartId, productId } = req.params;
     const { quantity } = req.body;
 
     try {
-      const updatedCart = await addItemToCart(cartId, productId, quantity);
+      const updatedCart = await Cart.addItem(cartId, productId, quantity);
       if (!updatedCart) {
         res.send('This item is already on your cart.');
       }
@@ -94,15 +82,12 @@ class CartsController {
     }
   }
 
-  async removeFromCart(req, res, next) {
+  async removeItem(req, res, next) {
     const { cartId, itemId } = req.params;
-    const { quantity } = req.body;
-
-    logger.info('remove item request received...');
     logger.info(`[DELETE] => /carts/${cartId}/${itemId}`);
 
     try {
-      const updatedCart = await removeItemFromCart(cartId, itemId);
+      const updatedCart = await Cart.removeItem(cartId, itemId);
       if (!updatedCart) {
         res.send('cart was not updated');
       }

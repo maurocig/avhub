@@ -1,5 +1,3 @@
-const logger = require('../../../middleware/logger');
-const { HttpError, errorResponse } = require('../../../utils/api.utils');
 const MongoContainer = require('../../containers/mongo.container');
 const CartSchema = require('../../schemas/Cart.schema');
 
