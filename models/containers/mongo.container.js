@@ -45,6 +45,10 @@ class MongoContainer {
     return updatedDocument;
   }
 
+  async addItem(id, item) {
+    return await this.model.updateOne({ _id: id }, { $push: { items: item } });
+  }
+
   async delete(id) {
     return await this.model.deleteOne({ _id: id }); // este método tira un error, por lo que no es necesario agregar nada.
   }

@@ -20,19 +20,20 @@ const mailPayload = {
   html: '<h1 style="color:teal;">Contenido de prueba desde <span style="color:red;">Node.js con Nodemailer</span></h1>',
 };
 
-const sendNewRegEmail = async (userInfo, recipient) => {
+const sendNewRegEmail = async (user, recipient) => {
   try {
     const mailResponse = await transporter.sendMail({
       from: `enviador <${ADMIN_EMAIL}>`,
       to: `Usuario <${recipient}>`,
       subject: 'E-commerce - Nuevo registro de usuario',
-      text: userInfo,
+      text: JSON.stringify(user, null, 2),
       attachments: [
         {
           path: 'public/img/ecommerce-mail.jpg',
         },
       ],
     });
+
     console.log(mailResponse);
   } catch (error) {
     console.log(error);

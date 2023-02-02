@@ -2,6 +2,7 @@ const HTTP_STATUS = require('../constants/api.constants');
 const { CartsDao } = require('../models/daos/app.daos');
 const { successResponse } = require('../utils/api.utils');
 const logger = require('../middleware/logger');
+const { addItemToCart, removeItemFromCart } = require('../services/carts.service');
 
 const cartsDao = new CartsDao();
 
@@ -31,7 +32,6 @@ class CartsController {
 
   async saveCart(req, res, next) {
     const cart = {
-      timestamp: new Date(),
       ...req.body,
     };
     logger.info('[POST] => /carts');
@@ -83,7 +83,7 @@ class CartsController {
     const { quantity } = req.body;
 
     try {
-      const updatedCart = await cartsDao.addItemToCart(cartId, productId, quantity);
+      const updatedCart = await addItemToCart(cartId, productId, quantity);
       if (!updatedCart) {
         res.send('This item is already on your cart.');
       }
@@ -95,11 +95,19 @@ class CartsController {
   }
 
   async removeFromCart(req, res, next) {
-    const { cartId, productId } = req.params;
+    const { cartId, itemId } = req.params;
+    const { quantity } = req.body;
+
+    logger.info('remove item request received...');
+    logger.info(`[DELETE] => /carts/${cartId}/${itemId}`);
+
     try {
-      const updatedCart = await cartsDao.removeProduct(cartId, productId);
-      const response = successResponse(updatedCart);
-      res.status(HTTP_STATUS.OK).json(response);
+      const updatedCart = await removeItemFromCart(cartId, itemId);
+      if (!updatedCart) {
+        res.send('cart was not updated');
+      }
+
+      res.redirect('/cart');
     } catch (error) {
       console.log(error);
       next(error);

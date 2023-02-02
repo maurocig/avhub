@@ -29,8 +29,7 @@ passport.use(
         const { name, address, age, phone } = req.body;
 
         const cart = await createCart();
-
-        const userItem = {
+        const user = {
           email: username,
           password: createHash(password),
           name,
@@ -40,11 +39,10 @@ passport.use(
           cart,
           image: req.file.filename,
         };
-
-        const user = await createUser(userItem);
+        const userResponse = await createUser(user);
         logger.info('User registration successful');
-        await sendNewRegEmail(JSON.stringify(userItem), ADMIN_EMAIL);
-        return done(null, user);
+        await sendNewRegEmail(user, ADMIN_EMAIL);
+        return done(null, userResponse);
       } catch (error) {
         logger.error('Error signing user up...');
         logger.error(error);

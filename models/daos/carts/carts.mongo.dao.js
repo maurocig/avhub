@@ -11,37 +11,23 @@ class CartsDao extends MongoContainer {
   }
 
   async getByIdAndPopulate(id) {
-    const cart = await this.model.findOne({ _id: id }, { __v: 0 }).populate('items.productId').lean();
-    logger.info(cart);
+    const cart = await this.model
+      .findOne({ _id: id }, { __v: 0 })
+      .populate('items.productId')
+      .lean();
     return cart;
   }
 
-  async addItemToCart(cartId, productId, quantity) {
-    const cart = await this.model.findOne({ _id: cartId }, { __v: 0 });
-    const product = await this.model.findOne;
-    if (cart) {
-      const cartItem = {
-        productId,
-        quantity,
-      };
-      if (cart.items.some((item) => item.productId == cartItem.productId)) {
-        return false;
-      }
-      const updatedCart = await this.model.updateOne({ _id: cartId }, { $push: { items: cartItem } });
-      return updatedCart;
-    }
-
-    const message = `Cart with id ${cartId} does not exist in our records.`;
-    throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
+  async addItem(id, item) {
+    const updatedCart = await this.model.updateOne({ _id: id }, { $push: { items: item } });
+    return updatedCart;
   }
 
-  async removeProduct(cartId, productId) {
-    const cart = await this.model.findOne({ _id: cartId }, { __v: 0 });
-    if (!cart) {
-      const message = `Cart with id ${cartId} does not exist in our records.`;
-      throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
-    }
-    const updatedCart = await this.model.updateOne({ id: cartId }, { $pull: { products: productId } });
+  async removeItem(cartId, itemId) {
+    const updatedCart = await this.model.updateOne(
+      { _id: cartId },
+      { $pull: { items: { _id: itemId } } }
+    );
     return updatedCart;
   }
 }

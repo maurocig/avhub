@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const methodOverride = require('method-override');
 
 const productsRoutes = require('./products.routes');
 const cartsRoutes = require('./carts.routes');
@@ -7,13 +8,17 @@ const usersRoutes = require('./users.routes');
 const logger = require('../middleware/logger');
 const { CartsDao } = require('../models/daos/app.daos');
 const { sendCheckoutEmail } = require('../middleware/node-mailer/sendEmail');
-const { sendCheckoutWhatsapp, sendCheckoutSMS } = require('../middleware/twilio/checkoutNotification');
+const {
+  sendCheckoutWhatsapp,
+  sendCheckoutSMS,
+} = require('../middleware/twilio/checkoutNotification');
 const { ADMIN_EMAIL, ADMIN_PHONE } = require('../config');
 
 const Cart = new CartsDao();
 
 const router = Router();
 
+router.use(methodOverride('_method'));
 router.use('/auth', authRoutes);
 router.use('/products', productsRoutes);
 router.use('/carts', cartsRoutes);

@@ -11,9 +11,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
   },
 });
-
 const upload = multer({ storage: storage });
-
 const router = express.Router();
 
 router.post(

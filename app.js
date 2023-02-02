@@ -1,9 +1,11 @@
 const express = require('express');
+
 const routes = require('./routers/app.routers');
 const errorMiddleware = require('./middleware/error.middleware');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const { engine } = require('express-handlebars');
+const methodOverride = require('method-override');
 
 const envConfig = require('./config');
 const dbConfig = require('./DB/db.config');
@@ -17,7 +19,7 @@ app.set('views', './views');
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(
   session({
@@ -37,6 +39,7 @@ app.use(
   })
 );
 app.use(passport.session());
+app.use(methodOverride('_method'));
 
 // Routes
 app.use('/', routes);

@@ -2,14 +2,29 @@
 
 <main class="m-3">
 	<h1>Carrito</h1>
-	<div class="bg-white rounded p-1">
-		{{#each cart.items}}
-		<div class="grid-cols-2 bg-white -sm p-2 flex justify-between">
-			<strong>{{this.quantity}}</strong>
-			<strong>{{this.productId.title}}</strong>
-			<strong>${{this.productId.price}}</strong>
-		</div>
-		{{/each}}
+	<div class="rounded px-3 py-2 bg-white">
+		<table class="bg-white w-full">
+			{{#each cart.items}}
+			<tr class="bg-white p-4">
+				<td>
+					<strong>{{this.quantity}}</strong>
+				</td>
+				<td>
+					<strong>{{this.productId.title}}</strong>
+				</td>
+				<td>
+					<strong>${{this.productId.price}}</strong>
+				</td>
+				<td>
+					<form action="/carts/{{../cart._id}}/{{this._id}}?_method=DELETE" method="POST">
+						<button type="submit">
+							<i class="material-icons text-red-500">delete</i>
+						</button>
+					</form>
+				</td>
+			</tr>
+			{{/each}}
+		</table>
 	</div>
 
 	<form action="/checkout" method="post">
