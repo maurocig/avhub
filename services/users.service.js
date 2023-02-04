@@ -2,16 +2,34 @@ const UsersDao = require('../models/daos/users/users.mongo.dao');
 
 const User = new UsersDao();
 
-const createUser = async (userItem) => {
-  return await User.create(userItem);
-};
+class UsersServices {
+  async create(userItem) {
+    return await User.save(userItem);
+  }
 
-const getUserByEmail = async (email) => {
-  return await User.getByEmail(email);
-};
+  async getByEmail(email) {
+    return await User.getByEmail(email);
+  }
 
-const getUserById = async (id) => {
-  return await User.getById(id);
-};
+  async getAll() {
+    return await User.getAll();
+  }
 
-module.exports = { createUser, getUserByEmail, getUserById };
+  async getById(id) {
+    return await User.getById(id);
+  }
+
+  async save(cart) {
+    return await User.save(cart);
+  }
+
+  async update(id, payload) {
+    return await User.update(id, payload);
+  }
+
+  async delete(id) {
+    return await User.delete(id);
+  }
+}
+
+module.exports = UsersServices;

@@ -28,7 +28,6 @@ class CartsServices {
 
   async addItem(cartId, productId, quantity) {
     const cart = await Cart.getById({ _id: cartId }, { __v: 0 });
-
     if (cart) {
       const cartItem = {
         productId,
@@ -42,18 +41,17 @@ class CartsServices {
     }
 
     const message = `Cart with id ${cartId} does not exist in our records.`;
-    throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
+    throw new HttpError(404, message);
   }
 
   async removeItem(cartId, itemId) {
     const cart = await Cart.getById({ _id: cartId }, { __v: 0 });
-
     if (cart) {
       const updatedCart = await Cart.removeItem(cartId, itemId);
       return updatedCart;
     }
     const message = `Cart with id ${cartId} does not exist in our records.`;
-    throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
+    throw new HttpError(404, message);
   }
 }
 

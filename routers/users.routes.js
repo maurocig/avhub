@@ -5,9 +5,9 @@ const fs = require('fs');
 
 const router = Router();
 
-router.get('/', usersController.getUsers);
-router.get('/:id', usersController.getUserById);
-router.put('/:id', usersController.updateUser);
-router.delete('/:id', usersController.deleteUser);
+router.get('/', usersController.getAll);
+router.get('/:id', usersController.getById);
+router.put('/:id', usersController.update);
+router.delete('/:id', usersController.delete);
 
 module.exports = router;
