@@ -1,5 +1,11 @@
 const admin = require('firebase-admin');
 const { getFirestore } = require('firebase-admin/firestore');
+const {
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+} = require('firebase-admin/firestore');
 
 const dbConfig = require('../../DB/db.config');
 
