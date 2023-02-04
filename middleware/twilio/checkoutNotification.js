@@ -17,6 +17,7 @@ const sendCheckoutWhatsapp = async (userEmail, phoneNumber) => {
       from: TWILIO_WHATSAPP,
       to: `whatsapp:${phoneNumber}`,
     });
+    logger.info(messageResponse);
   } catch (error) {
     logger.error(error);
   }
@@ -29,6 +30,7 @@ const sendCheckoutSMS = async (userEmail, phoneNumber) => {
       from: TWILIO_PHONE_NUMBER,
       to: `+${phoneNumber}`,
     });
+    logger.info(messageResponse);
   } catch (error) {
     logger.error(error);
   }
