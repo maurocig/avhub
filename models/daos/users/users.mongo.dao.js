@@ -10,21 +10,20 @@ class UsersDao extends MongoContainer {
     super(collection, UserSchema);
   }
 
-  async create(userItem) {
-    try {
-      const user = await this.save(userItem);
-      return user;
-    } catch (error) {
-      if (
-        error.message.toLowerCase().includes('e11000') ||
-        error.message.toLowerCase().includes('duplicate')
-      ) {
-        throw new HttpError(constants.HTTP_STATUS.BAD_REQUEST, 'User with given email already exist');
-      }
-      throw new HttpError(constants.HTTP_STATUS.INTERNAL_ERROR, error.message, error);
-    }
-  }
-
+  //   async create(userItem) {
+  //       const user = await this.save(userItem);
+  //       return user;
+  //     } catch (error) {
+  //       if (
+  //         error.message.toLowerCase().includes('e11000') ||
+  //         error.message.toLowerCase().includes('duplicate')
+  //       ) {
+  //         throw new HttpError(constants.HTTP_STATUS.BAD_REQUEST, 'User with given email already exist');
+  //       }
+  //       throw new HttpError(constants.HTTP_STATUS.INTERNAL_ERROR, error.message, error);
+  //     }
+  //   }
+  //
   async getById(id) {
     try {
       const document = await this.model.findById(id, { __v: 0 }).lean();
