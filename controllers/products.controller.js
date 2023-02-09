@@ -1,6 +1,7 @@
+const Mongoose = require('mongoose');
+const ProductsDto = require('../models/dtos/Products.dto');
 const ProductsServices = require('../services/products.service');
 const { successResponse } = require('../utils/api.utils');
-const Mongoose = require('mongoose');
 const logger = require('../middleware/logger');
 
 const Product = new ProductsServices();
@@ -10,7 +11,6 @@ class ProductsController {
     try {
       const product = {
         _id: Mongoose.Types.ObjectId(),
-        timestamp: new Date(),
         ...req.body,
       };
       await Product.create(product);

@@ -3,8 +3,14 @@ const ProductsDao = require('../models/daos/products/products.mongo.dao');
 const Product = new ProductsDao();
 
 class ProductsServices {
-  async create(userItem) {
-    return await Product.save(userItem);
+  async create(userDto) {
+    const product = {
+      title: userDto.title.trim(),
+      price: userDto.price.trim(),
+      image: userDto.image.trim(),
+      stock: userDto.stock.trim(),
+    };
+    return await Product.save(payload);
   }
 
   async getAll() {
