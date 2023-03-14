@@ -7,7 +7,7 @@ const logger = require('../middleware/logger');
 const productsDao = new ProductsDao();
 
 class ProductsController {
-  async getProducts(req, res, next) {
+  async getAll(req, res, next) {
     try {
       const products = await productsDao.getAll();
       res.render('products/index', { products });
@@ -17,7 +17,7 @@ class ProductsController {
     }
   }
 
-  async getProductsById(req, res, next) {
+  async getById(req, res, next) {
     const { id } = req.params;
     try {
       const product = await productsDao.getById(id);
@@ -28,22 +28,24 @@ class ProductsController {
     }
   }
 
-  async saveProduct(req, res, next) {
+  async save(req, res, next) {
     try {
+      const user = req.user;
       const product = {
         _id: Mongoose.Types.ObjectId(),
         timestamp: new Date(),
         ...req.body,
       };
       await productsDao.save(product);
+
       const response = successResponse(product);
-      res.status(HTTP_STATUS.CREATED).json(response);
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }
   }
 
-  async updateProduct(req, res, next) {
+  async update(req, res, next) {
     const { id } = req.params;
     try {
       const updatedProduct = {
@@ -52,18 +54,18 @@ class ProductsController {
       };
       await productsDao.update(id, req.body);
       const response = successResponse(updatedProduct);
-      res.status(HTTP_STATUS.OK).json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
   }
 
-  async deleteProduct(req, res, next) {
+  async delete(req, res, next) {
     const { id } = req.params;
     try {
       const deletedProduct = await productsDao.delete(id);
       const response = successResponse(deletedProduct);
-      res.status(HTTP_STATUS.OK).json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
