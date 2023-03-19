@@ -1,7 +1,6 @@
-const HTTP_STATUS = require('../constants/api.constants');
+const Mongoose = require('mongoose');
 const { ProductsDao } = require('../models/daos/app.daos');
 const { successResponse } = require('../utils/api.utils');
-const Mongoose = require('mongoose');
 const logger = require('../middleware/logger');
 
 const productsDao = new ProductsDao();
@@ -10,7 +9,11 @@ class ProductsController {
   async getAll(req, res, next) {
     try {
       const products = await productsDao.getAll();
-      res.render('products/index', { products });
+      if (req.user) {
+        res.render('products/index', { products });
+      } else {
+        res.redirect('/login');
+      }
     } catch (error) {
       console.log(error);
       next(error);
