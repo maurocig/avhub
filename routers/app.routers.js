@@ -24,7 +24,8 @@ router.get('/', async (req, res) => {
     logger.info('[GET] => /');
     const user = req.user;
     if (user) {
-      res.render('home', { user });
+      // res.render('home', { user });
+      res.redirect('/products');
     } else {
       res.sendFile('login.html', { root: 'public' });
     }
