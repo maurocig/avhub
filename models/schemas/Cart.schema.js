@@ -21,8 +21,14 @@ const CartSchema = new Schema(
   {
     items: [itemSchema],
     subTotal: {
-      default: 0,
       type: Number,
+      default: 0,
+    },
+    email: {
+      type: String,
+    },
+    address: {
+      type: String,
     },
   },
   {

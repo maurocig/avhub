@@ -31,7 +31,11 @@ passport.use(
         logger.info('[POST] => /register');
         const { name, address, age, phone } = req.body;
 
-        const cart = await Cart.save({ items: [] });
+        const cart = await Cart.save({
+          items: [],
+          email: username,
+          address,
+        });
 
         const userItem = {
           email: username,

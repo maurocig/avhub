@@ -41,7 +41,6 @@ class ProductsController {
         ...req.body,
       };
       await productsDao.save(product);
-
       const response = successResponse(product);
       res.status(201).json(response);
     } catch (error) {

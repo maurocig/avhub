@@ -2,14 +2,21 @@
 
 <main class="m-4 relative h-max">
 
+	<a href="/products">Productos</a> > <a href="/products/categories/{{product.category}}">{{product.category}}</a>
 	<h1>{{product.title}}</h1>
 	<div class="container p-0 mb-3">
 		<img src="{{product.image}}" alt="">
 	</div>
 
-	<section class="">
+	<section class="mb-3">
 		<span class="my-3">
 			Precio: <strong>${{product.price}}</strong>
+		</span>
+	</section>
+
+	<section>
+		<span class="my-3">
+			{{product.description}}
 		</span>
 	</section>
 
