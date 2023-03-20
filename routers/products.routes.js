@@ -9,4 +9,6 @@ router.post('/', productsController.save);
 router.put('/:id', productsController.update);
 router.delete('/:id', productsController.delete);
 
+router.get('/categories/:id', productsController.getByCategory);
+
 module.exports = router;

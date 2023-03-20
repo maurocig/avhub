@@ -26,6 +26,7 @@ class ProductsController {
       const product = await productsDao.getById(id);
       const user = req.user;
       res.render('products/show', { product, user });
+      // res.send(product);
     } catch (error) {
       next(error);
     }
@@ -72,6 +73,15 @@ class ProductsController {
     } catch (error) {
       next(error);
     }
+  }
+
+  async getByCategory(req, res, next) {
+    const { id } = req.params;
+    const products = await productsDao.getAll({ category: id });
+    if (products.length === 0) {
+      res.send('No existen productos con esa categoría.');
+    }
+    res.render('products/index', { products });
   }
 }
 
