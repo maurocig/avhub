@@ -13,3 +13,5 @@ const OrderSchema = new Schema({
     ref: 'carts',
   },
 });
+
+module.exports = OrderSchema;
