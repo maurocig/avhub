@@ -1,17 +1,20 @@
 const { Schema } = require('mongoose');
 
-const OrderSchema = new Schema({
-  orderNumber: {
-    type: Number,
+const OrderSchema = new Schema(
+  {
+    items: [],
+    email: {
+      type: String,
+    },
+    address: {},
+    generated: {
+      type: Boolean,
+      default: true,
+    },
   },
-  generated: {
-    type: Boolean,
-    default: true,
-  },
-  cartId: {
-    type: Schema.Types.ObjectId,
-    ref: 'carts',
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = OrderSchema;

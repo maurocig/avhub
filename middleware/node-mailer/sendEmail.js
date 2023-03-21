@@ -39,18 +39,25 @@ const sendNewRegEmail = async (userInfo, recipient) => {
   }
 };
 
-const sendCheckoutEmail = async (userInfo, cart, recipient) => {
+const sendCheckoutEmail = async (order, recipient) => {
+  const htmlArray = order.items.map((item) => `<li>${item.productId.title}, ${item.quantity} unidades.</li>`);
+  const htmlString = htmlArray.join('');
+
+  const html = `
+	Email: <strong>${order.email}</strong><br>
+	Orden Id: <strong>${order._id}</strong><br>
+	Dirección: <strong>${order.address}</strong><br>
+	Items: ${htmlString}	`;
+
   try {
     const mailResponse = await transporter.sendMail({
       from: `enviador <${ADMIN_EMAIL}>`,
       to: `Usuario <${recipient}>`,
-      subject: `E-commerce - Nuevo pedido de ${(userInfo.name, userInfo.email)}`,
-      html: `
-			<h1>Productos</h1>
-			${JSON.stringify(cart.items)}
-			`,
+      subject: `E-commerce - Nuevo pedido de ${order.email}`,
+      html: html,
     });
-    console.log(mailResponse);
+
+    return html;
   } catch (error) {
     console.log(error);
   }

@@ -6,11 +6,13 @@ const authRoutes = require('./auth.routes');
 const usersRoutes = require('./users.routes');
 const logger = require('../middleware/logger');
 const { CartsDao } = require('../models/daos/app.daos');
+const OrdersDao = require('../models/daos/orders/orders.mongo.dao');
 const { sendCheckoutEmail } = require('../middleware/node-mailer/sendEmail');
 const { sendCheckoutWhatsapp, sendCheckoutSMS } = require('../middleware/twilio/checkoutNotification');
 const { ADMIN_EMAIL, ADMIN_PHONE } = require('../config');
 
 const Cart = new CartsDao();
+const Order = new OrdersDao();
 
 const router = Router();
 
@@ -81,17 +83,31 @@ router.get('/cart', async (req, res) => {
   }
 });
 
+// router.post('/checkout', async (req, res) => {
+//   const cartId = req.user.cart;
+//   const { email, phone } = req.user;
+//   try {
+//     const cart = await Cart.getByIdAndPopulate(cartId);
+//     await sendCheckoutEmail(req.user, cart, ADMIN_EMAIL);
+//     await sendCheckoutWhatsapp(email, ADMIN_PHONE);
+//     await sendCheckoutSMS(email, phone);
+//     res.send('Su pedido fue procesado de forma exitosa.');
+//   } catch (error) {
+//     logger.error(error);
+//   }
+// });
+
 router.post('/checkout', async (req, res) => {
   const cartId = req.user.cart;
-  const { email, phone } = req.user;
   try {
     const cart = await Cart.getByIdAndPopulate(cartId);
-    await sendCheckoutEmail(req.user, cart, ADMIN_EMAIL);
-    await sendCheckoutWhatsapp(email, ADMIN_PHONE);
-    await sendCheckoutSMS(email, phone);
-    res.send('Su pedido fue procesado de forma exitosa.');
-  } catch (error) {
-    logger.error(error);
+    const { items, email, address } = cart;
+    const newOrder = { items, email, address, generated: true };
+    await Order.save(newOrder);
+    const mail = await sendCheckoutEmail(newOrder, ADMIN_EMAIL);
+    res.send(mail);
+  } catch (e) {
+    logger.error(e);
   }
 });
 
