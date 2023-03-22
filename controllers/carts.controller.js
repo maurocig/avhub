@@ -1,5 +1,6 @@
 const HTTP_STATUS = require('../constants/api.constants');
-const { CartsDao } = require('../models/daos/app.daos');
+// const { CartsDao } = require('../models/daos/app.daos');
+const CartsDao = require('../models/daos/carts/carts.mongo.dao');
 const { successResponse } = require('../utils/api.utils');
 const logger = require('../middleware/logger');
 
@@ -11,7 +12,7 @@ class CartsController {
       logger.info('[GET] => /carts');
       const carts = await cartsDao.getAll();
       const response = successResponse(carts);
-      res.status(HTTP_STATUS.OK).json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -95,11 +96,10 @@ class CartsController {
   }
 
   async removeFromCart(req, res, next) {
-    const { cartId, productId } = req.params;
+    const { cartId, itemId } = req.params;
     try {
-      const updatedCart = await cartsDao.removeProduct(cartId, productId);
-      const response = successResponse(updatedCart);
-      res.status(HTTP_STATUS.OK).json(response);
+      const updatedCart = await cartsDao.removeItemFromCart(cartId, itemId);
+      res.redirect('/cart');
     } catch (error) {
       console.log(error);
       next(error);

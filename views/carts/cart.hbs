@@ -13,6 +13,9 @@
 			<strong>{{this.quantity}}</strong>
 			<strong>{{this.productId.title}}</strong>
 			<strong>${{this.productId.price}}</strong>
+			<div class="text-red-600"><strong>
+					<form method="POST" action="/carts/{{../cart._id}}/{{this._id}}?_method=DELETE"><button>X</button></form>
+				</strong></div>
 		</div>
 		{{/each}}
 	</div>

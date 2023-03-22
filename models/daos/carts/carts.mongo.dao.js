@@ -18,15 +18,16 @@ class CartsDao extends MongoContainer {
 
   async addItemToCart(cartId, productId, quantity) {
     const cart = await this.model.findOne({ _id: cartId }, { __v: 0 });
-    const product = await this.model.findOne;
     if (cart) {
       const cartItem = {
         productId,
         quantity,
       };
+
       if (cart.items.some((item) => item.productId == cartItem.productId)) {
         return false;
       }
+
       const updatedCart = await this.model.updateOne({ _id: cartId }, { $push: { items: cartItem } });
       return updatedCart;
     }
@@ -35,14 +36,23 @@ class CartsDao extends MongoContainer {
     throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
   }
 
-  async removeProduct(cartId, productId) {
+  async removeItemFromCart(cartId, itemId) {
     const cart = await this.model.findOne({ _id: cartId }, { __v: 0 });
     if (!cart) {
       const message = `Cart with id ${cartId} does not exist in our records.`;
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message);
     }
-    const updatedCart = await this.model.updateOne({ id: cartId }, { $pull: { products: productId } });
-    return updatedCart;
+
+    /* const updatedCart = await this.model.updateOne( */
+    /*   { id: cartId }, */
+    /*   { $pull: { items: itemId } }, */
+    /*   { new: true } */
+    /* ); */
+
+    cart.items.pull(itemId);
+    await cart.save();
+
+    return cart;
   }
 }
 
