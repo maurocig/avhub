@@ -13,9 +13,11 @@
 			<strong>{{this.quantity}}</strong>
 			<strong>{{this.productId.title}}</strong>
 			<strong>${{this.productId.price}}</strong>
-			<div class="text-red-600"><strong>
-					<form method="POST" action="/carts/{{../cart._id}}/{{this._id}}?_method=DELETE"><button>X</button></form>
-				</strong></div>
+			<div class="text-red-600 font-bold">
+				<form method="POST" action="/carts/{{../cart._id}}/{{this._id}}?_method=DELETE">
+					<button><strong>X</strong></button>
+				</form>
+			</div>
 		</div>
 		{{/each}}
 	</div>
