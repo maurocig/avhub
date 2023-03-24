@@ -28,8 +28,8 @@
 	const chat = document.querySelector('#container-chat');
 
 	async function render(file, obj, target) {
-		const data = await fetch(`http://localhost:8080/${file}`);
-		// const data = await fetch(`http://ecommerce-coderhouse.onrender.com/${file}`);
+		// const data = await fetch(`http://localhost:8080/${file}`);
+		const data = await fetch(`http://ecommerce-coderhouse.onrender.com/${file}`);
 		const parsedData = await data.text();
 		template = Handlebars.compile(parsedData);
 		const html = await template(obj);
