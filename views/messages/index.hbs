@@ -4,8 +4,16 @@
 	<section>
 		<h1>Chatear con un representante</h1>
 		<div class="container-chat">
-			<div id="container-form"></div>
+			{{!-- <div id="container-form"></div> --}}
 			<div id="container-chat"></div>
+
+			<form id="chat-form">
+				<input class="w-full mb-2 text-black" id="email-input" type="email" placeholder="E-mail" value="{{user.email}}"
+					required>
+				<textarea class="w-full mb-2 text-black" name="message" id="text-area-input" cols="30" rows="5"
+					placeholder="Mensaje" required></textarea>
+				<button type="submit" class="bg-green-600  px-4 py-2">Enviar</button>
+			</form>
 		</div>
 	</section>
 </main>
@@ -16,11 +24,10 @@
 <script>
 	const socket = io();
 
-	const form = document.querySelector('#container-form');
+	const form = document.querySelector('#chat-form');
 	const chat = document.querySelector('#container-chat');
 
 	async function render(file, obj, target) {
-		// const data = await fetch(`http://localhost:${PORT}/${file}`);
 		const data = await fetch(`http://localhost:8080/${file}`);
 		const parsedData = await data.text();
 		template = Handlebars.compile(parsedData);
@@ -28,7 +35,7 @@
 		target.innerHTML = html;
 	}
 
-	chat.addEventListener('submit', (e) => {
+	form.addEventListener('submit', (e) => {
 		const emailInput = document.querySelector('#email-input');
 		const messageInput = document.querySelector('#text-area-input');
 		e.preventDefault();
