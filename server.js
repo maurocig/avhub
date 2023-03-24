@@ -10,7 +10,7 @@ const cluster = require('cluster');
 const logger = require('./middleware/logger');
 
 const MessagesDao = require('./models/daos/messages/messages.mongo.dao');
-const messagesDao = new MessagesDao();
+const Message = new MessagesDao();
 
 const httpServer = http.createServer(app);
 
@@ -27,8 +27,14 @@ const dataSource = DATASOURCE_BY_ENV[envConfig.DATASOURCE];
 const io = new Server(httpServer);
 io.on('connection', async (socket) => {
   logger.info(`User connected to chat: ${socket.id}`);
-  // const messages = await messagesDao.getAll();
-  // socket.emit('messages', messages);
+  const messages = await Message.getAll();
+  socket.emit('messages', messages);
+
+  socket.on('new-message', async (data) => {
+    await Message.create(data);
+    const updatedMessages = await Message.getAll();
+    io.emit('messages', updatedMessages);
+  });
 });
 
 // Listen

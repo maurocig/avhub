@@ -1,0 +1,47 @@
+{{> nav}}
+
+<main class="m-4 relative h-max">
+	<section>
+		<h1>Chatear con un representante</h1>
+		<div class="container-chat">
+			<div id="container-form"></div>
+			<div id="container-chat"></div>
+		</div>
+	</section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+	const socket = io();
+
+	const form = document.querySelector('#container-form');
+	const chat = document.querySelector('#container-chat');
+
+	async function render(file, obj, target) {
+		// const data = await fetch(`http://localhost:${PORT}/${file}`);
+		const data = await fetch(`http://localhost:8080/${file}`);
+		const parsedData = await data.text();
+		template = Handlebars.compile(parsedData);
+		const html = await template(obj);
+		target.innerHTML = html;
+	}
+
+	chat.addEventListener('submit', (e) => {
+		const emailInput = document.querySelector('#email-input');
+		const messageInput = document.querySelector('#text-area-input');
+		e.preventDefault();
+		const newMessage = {
+			email: emailInput.value,
+			mode: 'user',
+			body: messageInput.value,
+		};
+		socket.emit('new-message', newMessage);
+	});
+
+	socket.on('messages', async (messages) => {
+		await render('chat.hbs', { messages }, chat);
+	});
+
+</script>
