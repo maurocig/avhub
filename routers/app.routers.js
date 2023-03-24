@@ -4,6 +4,7 @@ const productsRoutes = require('./products.routes');
 const cartsRoutes = require('./carts.routes');
 const authRoutes = require('./auth.routes');
 const usersRoutes = require('./users.routes');
+const messagesRoutes = require('./messages.routes');
 const logger = require('../middleware/logger');
 // const CartsDao = require('../models/daos/app.daos');
 const CartsDao = require('../models/daos/carts/carts.mongo.dao');
@@ -21,6 +22,7 @@ router.use('/auth', authRoutes);
 router.use('/products', productsRoutes);
 router.use('/carts', cartsRoutes);
 router.use('/users', usersRoutes);
+router.use('/messages', messagesRoutes);
 
 router.get('/', async (req, res) => {
   try {
@@ -84,19 +86,10 @@ router.get('/cart', async (req, res) => {
   }
 });
 
-// router.post('/checkout', async (req, res) => {
-//   const cartId = req.user.cart;
-//   const { email, phone } = req.user;
-//   try {
-//     const cart = await Cart.getByIdAndPopulate(cartId);
-//     await sendCheckoutEmail(req.user, cart, ADMIN_EMAIL);
-//     await sendCheckoutWhatsapp(email, ADMIN_PHONE);
-//     await sendCheckoutSMS(email, phone);
-//     res.send('Su pedido fue procesado de forma exitosa.');
-//   } catch (error) {
-//     logger.error(error);
-//   }
-// });
+router.get('/messages', async (req, res) => {
+  const user = req.user;
+  res.status(200).render('messages/index.hbs', { user });
+});
 
 router.post('/checkout', async (req, res) => {
   const cartId = req.user.cart;
