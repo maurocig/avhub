@@ -4,6 +4,7 @@ const errorMiddleware = require('./middleware/error.middleware');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const { engine } = require('express-handlebars');
+const cors = require('cors');
 
 const envConfig = require('./config');
 const dbConfig = require('./DB/db.config');
@@ -18,6 +19,7 @@ app.set('views', './views');
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 app.use(express.static(__dirname + '/public'));
 app.use(
   session({
